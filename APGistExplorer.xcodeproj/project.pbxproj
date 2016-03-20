@@ -15,6 +15,11 @@
 		5B4274CF1C9E8D4A00EE5868 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B4274CD1C9E8D4A00EE5868 /* LaunchScreen.storyboard */; };
 		5B4274DA1C9E8D4B00EE5868 /* APGistExplorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4274D91C9E8D4B00EE5868 /* APGistExplorerTests.swift */; };
 		5B4274E51C9E8D4B00EE5868 /* APGistExplorerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4274E41C9E8D4B00EE5868 /* APGistExplorerUITests.swift */; };
+		5B4274F41C9E973200EE5868 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4274F31C9E973200EE5868 /* GitHubAPIManager.swift */; };
+		5B4274F61C9E97F900EE5868 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4274F51C9E97F900EE5868 /* GistRouter.swift */; };
+		5B5D93E21C9ED4B000ED9A49 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D93E11C9ED4B000ED9A49 /* Gist.swift */; };
+		5B5D93E41C9F176200ED9A49 /* ResponseJSONObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D93E31C9F176200ED9A49 /* ResponseJSONObjectSerializable.swift */; };
+		5B5D93E61C9F186800ED9A49 /* AlamofireRequest+JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D93E51C9F186800ED9A49 /* AlamofireRequest+JSONSerializable.swift */; };
 		BA64DB2728CFD5B782C01DFE /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B881B7A385BEA93E958DD022 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +56,11 @@
 		5B4274E01C9E8D4B00EE5868 /* APGistExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = APGistExplorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B4274E41C9E8D4B00EE5868 /* APGistExplorerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APGistExplorerUITests.swift; sourceTree = "<group>"; };
 		5B4274E61C9E8D4B00EE5868 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5B4274F31C9E973200EE5868 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
+		5B4274F51C9E97F900EE5868 /* GistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
+		5B5D93E11C9ED4B000ED9A49 /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
+		5B5D93E31C9F176200ED9A49 /* ResponseJSONObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJSONObjectSerializable.swift; sourceTree = "<group>"; };
+		5B5D93E51C9F186800ED9A49 /* AlamofireRequest+JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlamofireRequest+JSONSerializable.swift"; sourceTree = "<group>"; };
 		B881B7A385BEA93E958DD022 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2C99E5811FD6C4900033658 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +116,7 @@
 		5B4274C11C9E8D4A00EE5868 /* APGistExplorer */ = {
 			isa = PBXGroup;
 			children = (
+				5B4274F21C9E971500EE5868 /* API */,
 				5B4274C21C9E8D4A00EE5868 /* AppDelegate.swift */,
 				5B4274C41C9E8D4A00EE5868 /* MasterViewController.swift */,
 				5B4274C61C9E8D4A00EE5868 /* DetailViewController.swift */,
@@ -133,6 +144,18 @@
 				5B4274E61C9E8D4B00EE5868 /* Info.plist */,
 			);
 			path = APGistExplorerUITests;
+			sourceTree = "<group>";
+		};
+		5B4274F21C9E971500EE5868 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				5B4274F31C9E973200EE5868 /* GitHubAPIManager.swift */,
+				5B4274F51C9E97F900EE5868 /* GistRouter.swift */,
+				5B5D93E11C9ED4B000ED9A49 /* Gist.swift */,
+				5B5D93E31C9F176200ED9A49 /* ResponseJSONObjectSerializable.swift */,
+				5B5D93E51C9F186800ED9A49 /* AlamofireRequest+JSONSerializable.swift */,
+			);
+			name = API;
 			sourceTree = "<group>";
 		};
 		B9C8939F454296A93A461B76 /* Frameworks */ = {
@@ -335,8 +358,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B4274C71C9E8D4A00EE5868 /* DetailViewController.swift in Sources */,
+				5B4274F41C9E973200EE5868 /* GitHubAPIManager.swift in Sources */,
+				5B5D93E41C9F176200ED9A49 /* ResponseJSONObjectSerializable.swift in Sources */,
+				5B5D93E21C9ED4B000ED9A49 /* Gist.swift in Sources */,
 				5B4274C51C9E8D4A00EE5868 /* MasterViewController.swift in Sources */,
+				5B4274F61C9E97F900EE5868 /* GistRouter.swift in Sources */,
 				5B4274C31C9E8D4A00EE5868 /* AppDelegate.swift in Sources */,
+				5B5D93E61C9F186800ED9A49 /* AlamofireRequest+JSONSerializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
