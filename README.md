@@ -19,3 +19,4 @@ A Swift App that interacts with the GitHub API, to view and manage gists.
 - PINRemoteImage (1.2.3)
 - SwiftyJSON (2.3.2)
 - XLForm (3.1.1)
+- XCGLogger (3.2.0)
