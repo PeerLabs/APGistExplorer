@@ -32,6 +32,32 @@ class GitHubAPIManager {
 		
 	}
 	
+	func imageFromURLString(imageURLString: String, completionHandler: (UIImage?, NSError?) -> Void ) {
+		
+		log.debug("Started!")
+		
+		alamofireManager.request(.GET, imageURLString).response {
+			
+			(request, response, data, error) in
+				
+				if data == nil {
+					
+					completionHandler(nil, nil)
+					log.debug("Finished!")
+					return
+				}
+				
+				let image = UIImage(data: data! as NSData)
+				
+				completionHandler(image, nil)
+			
+			
+		}
+		
+		log.debug("Finished!")
+
+	}
+	
 	
 	func printPublicGists() {
 		

@@ -150,8 +150,33 @@ class MasterViewController: UITableViewController {
 								
         cell.detailTextLabel!.text = gist.ownerLogin
 								
-        // TODO: set cell.imageView to display image at gist.ownerAvatarURL
-								
+		if let urlString = gist.ownerAvatarURL {
+			
+			GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: { (image, error) in
+				
+				
+				if let returnedError = error {
+					
+					log.debug(returnedError.description)
+					
+				}
+				
+				if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+					
+					cellToUpdate.imageView?.image = image
+					
+					cellToUpdate.setNeedsLayout()
+					
+				}
+				
+			})
+			
+		} else {
+			
+			cell.imageView?.image = nil
+			
+		}
+			
         log.debug("Finished!")
 								
         return cell
