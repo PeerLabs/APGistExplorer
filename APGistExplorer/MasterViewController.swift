@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import PINRemoteImage
 
 class MasterViewController: UITableViewController {
 	
@@ -151,43 +151,19 @@ class MasterViewController: UITableViewController {
         cell.textLabel!.text = gist.description
 								
         cell.detailTextLabel!.text = gist.ownerLogin
-								
-		if let urlString = gist.ownerAvatarURL {
+		
+		cell.imageView?.image = nil
+		
+		if let urlString = gist.ownerAvatarURL, url = NSURL(string: urlString) {
 			
-			if let cachedImage = imageCache[urlString] {
-				
-				cell.imageView?.image = cachedImage
-				
-			} else {
-				
-				GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: { (image, error) in
-					
-					
-					if let returnedError = error {
-						
-						log.debug(returnedError.description)
-						
-					}
-					
-					if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
-						
-						cellToUpdate.imageView?.image = image
-						
-						cellToUpdate.setNeedsLayout()
-						
-					}
-					
-				})
-
-			}
-
+			cell.imageView?.pin_setImageFromURL(url, placeholderImage: UIImage(named: "avatarPlaceholder"))
 			
 		} else {
 			
-			cell.imageView?.image = nil
+			cell.imageView?.image = UIImage(named: "avatarPlaceholder")
 			
 		}
-			
+		
         log.debug("Finished!")
 								
         return cell
