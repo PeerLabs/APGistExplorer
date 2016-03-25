@@ -13,6 +13,8 @@ class MasterViewController: UITableViewController {
 	
 	var detailViewController: DetailViewController? = nil
 	
+	var imageCache = [String: UIImage?]()
+	
 	var gists = [Gist]() {
 		
 		didSet {
@@ -152,24 +154,33 @@ class MasterViewController: UITableViewController {
 								
 		if let urlString = gist.ownerAvatarURL {
 			
-			GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: { (image, error) in
+			if let cachedImage = imageCache[urlString] {
 				
+				cell.imageView?.image = cachedImage
 				
-				if let returnedError = error {
-					
-					log.debug(returnedError.description)
-					
-				}
+			} else {
 				
-				if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+				GitHubAPIManager.sharedInstance.imageFromURLString(urlString, completionHandler: { (image, error) in
 					
-					cellToUpdate.imageView?.image = image
 					
-					cellToUpdate.setNeedsLayout()
+					if let returnedError = error {
+						
+						log.debug(returnedError.description)
+						
+					}
 					
-				}
-				
-			})
+					if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+						
+						cellToUpdate.imageView?.image = image
+						
+						cellToUpdate.setNeedsLayout()
+						
+					}
+					
+				})
+
+			}
+
 			
 		} else {
 			
