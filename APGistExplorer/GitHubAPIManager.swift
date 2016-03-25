@@ -10,23 +10,25 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-class GitHubManager {
+class GitHubAPIManager {
 	
-	//    static let sharedInstance = GitHubAPIManager()
+	static let sharedInstance = GitHubAPIManager()
 	
-	class var sharedInstance: GitHubManager {
+	var alamofireManager:Alamofire.Manager
+	
+	let clientID: String = "1234567890"
+	let clientSecret: String = "abcdefghijkl"
+	
+	let headers = ["Accept": "application/json"]
+	
+	init () {
 		
 		log.debug("Started!")
 		
-		struct Singleton {
-			
-			static let instance = GitHubManager()
-			
-		}
+		let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+		alamofireManager = Alamofire.Manager(configuration: configuration)
 		
 		log.debug("Finished!")
-		
-		return Singleton.instance
 		
 	}
 	
