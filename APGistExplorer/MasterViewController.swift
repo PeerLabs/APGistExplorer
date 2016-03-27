@@ -29,6 +29,8 @@ class MasterViewController: UITableViewController {
 	
 	var nextPageURLString: String?
 	
+	var dateFormatter = NSDateFormatter()
+	
 	override func viewDidLoad() {
 		
 		log.debug("Started!")
@@ -44,6 +46,9 @@ class MasterViewController: UITableViewController {
 			self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
 		}
 		
+		self.dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+		self.dateFormatter.timeStyle = NSDateFormatterStyle.LongStyle
+		
 		loadGists(nil)
 		
 		log.debug("Finished!")
@@ -55,6 +60,14 @@ class MasterViewController: UITableViewController {
 		log.debug("Started!")
 		
 		self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+		
+		if (self.refreshControl == nil) {
+			
+			self.refreshControl = UIRefreshControl()
+			self.refreshControl?.addTarget(self, action: #selector(self.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+			
+		}
+		
 		super.viewWillAppear(animated)
 		
 		log.debug("Finished!")
@@ -216,50 +229,20 @@ class MasterViewController: UITableViewController {
 											
 	}
 
-//	func loadGists() {
-//											
-//		log.debug("Started!")
-	
-//		GitHubAPIManager.printPublicGists()
+	// MARK: - Pull to Refresh
+	func refresh(sender:AnyObject) {
 		
-//		let gist1 = Gist()
-//		gist1.description = "The first gist"
-//		gist1.ownerLogin = "gist1Owner"
-//		let gist2 = Gist()
-//		gist2.description = "The second gist"
-//		gist2.ownerLogin = "gist2Owner"
-//		let gist3 = Gist()
-//		gist3.description = "The third gist"
-//		gist3.ownerLogin = "gist3Owner"
-//		gists = [gist1, gist2, gist3]
-//		// Tell the table view to reload
-//		self.tableView.reloadData()
-				
-//				
-//		GitHubAPIManager.sharedInstance.getPublicGists() { result in
-//			
-//			guard result.error == nil else {
-//			
-//				print(result.error)
-//			
-//				// TODO: display error
-//			
-//				return
-//			
-//			}
-//			
-//			if let fetchedGists = result.value {
-//	
-//				self.gists = fetchedGists
-//	
-//			}
-//			
-//		}
-//		
-//		log.debug("Finished!")
-//			
-//	}
-//	
+		log.debug("Started!")
+		
+		nextPageURLString = nil // so it doesn't try to append the results
+		loadGists(nil)
+		
+		log.debug("Finished!")
+		
+	}
+	
+	// MARK: - LoadGists
+	
 	func loadGists(urlToLoad: String?) {
 		
 		log.debug("Started!")
@@ -268,7 +251,16 @@ class MasterViewController: UITableViewController {
 		
 		GitHubAPIManager.sharedInstance.getPublicGists(urlToLoad) { (result, nextPage) in
 			
+			self.isLoading = false
+			
 			self.nextPageURLString = nextPage
+			
+			// tell refresh control it can stop showing up now
+			if self.refreshControl != nil && self.refreshControl!.refreshing {
+				
+				self.refreshControl?.endRefreshing()
+				
+			}
 			
 			guard result.error == nil else {
 				
@@ -291,6 +283,11 @@ class MasterViewController: UITableViewController {
 				}
 				
 			}
+			
+			// update "last updated" title for refresh control
+			let now = NSDate()
+			let updateString = "Last Updated at " + self.dateFormatter.stringFromDate(now)
+			self.refreshControl?.attributedTitle = NSAttributedString(string: updateString)
 			
 			self.tableView.reloadData()
 			
