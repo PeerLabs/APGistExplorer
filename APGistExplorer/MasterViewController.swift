@@ -25,7 +25,9 @@ class MasterViewController: UITableViewController {
 		
 	}
 	
-//	let GitHubAPIManager = GitHubAPIManager.sharedInstance
+	var isLoading = false
+	
+	var nextPageURLString: String?
 	
 	override func viewDidLoad() {
 		
@@ -42,7 +44,7 @@ class MasterViewController: UITableViewController {
 			self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
 		}
 		
-		loadGists()
+		loadGists(nil)
 		
 		log.debug("Finished!")
 		
@@ -65,7 +67,7 @@ class MasterViewController: UITableViewController {
 		
 		super.viewDidAppear(animated)
 		
-		loadGists()
+		loadGists(nil)
 		
 		log.debug("Finished!")
 		
@@ -164,6 +166,20 @@ class MasterViewController: UITableViewController {
 			
 		}
 		
+		// See if we need to load more gists
+		
+		let rowsToLoadFromBottom = 5;
+		
+		let rowsLoaded = gists.count
+		
+		if let nextPage = nextPageURLString {
+			
+			if (!isLoading && (indexPath.row >= (rowsLoaded - rowsToLoadFromBottom))) {
+				
+				self.loadGists(nextPage)
+			}
+		}
+		
         log.debug("Finished!")
 								
         return cell
@@ -200,10 +216,10 @@ class MasterViewController: UITableViewController {
 											
 	}
 
-	func loadGists() {
-											
-		log.debug("Started!")
-		
+//	func loadGists() {
+//											
+//		log.debug("Started!")
+	
 //		GitHubAPIManager.printPublicGists()
 		
 //		let gist1 = Gist()
@@ -219,29 +235,69 @@ class MasterViewController: UITableViewController {
 //		// Tell the table view to reload
 //		self.tableView.reloadData()
 				
-				
-		GitHubAPIManager.sharedInstance.getPublicGists() { result in
+//				
+//		GitHubAPIManager.sharedInstance.getPublicGists() { result in
+//			
+//			guard result.error == nil else {
+//			
+//				print(result.error)
+//			
+//				// TODO: display error
+//			
+//				return
+//			
+//			}
+//			
+//			if let fetchedGists = result.value {
+//	
+//				self.gists = fetchedGists
+//	
+//			}
+//			
+//		}
+//		
+//		log.debug("Finished!")
+//			
+//	}
+//	
+	func loadGists(urlToLoad: String?) {
+		
+		log.debug("Started!")
+		
+		self.isLoading = true
+		
+		GitHubAPIManager.sharedInstance.getPublicGists(urlToLoad) { (result, nextPage) in
+			
+			self.nextPageURLString = nextPage
 			
 			guard result.error == nil else {
-			
+				
 				print(result.error)
-			
 				// TODO: display error
-			
 				return
-			
+				
 			}
 			
 			if let fetchedGists = result.value {
-	
-				self.gists = fetchedGists
-	
+				
+				if self.nextPageURLString != nil {
+					
+					self.gists += fetchedGists
+				
+				} else {
+				
+					self.gists = fetchedGists
+				
+				}
+				
 			}
+			
+			self.tableView.reloadData()
 			
 		}
 		
 		log.debug("Finished!")
-			
+		
 	}
 	
 }
